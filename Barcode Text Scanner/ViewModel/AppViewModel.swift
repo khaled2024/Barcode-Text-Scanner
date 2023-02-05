@@ -29,7 +29,7 @@ final class AppViewModel:ObservableObject{
     @Published var dataScannerAccessStatus: DataScannerAccesStatusType = .notDetermined
     @Published var recognizedItems: [RecognizedItem] = []
     @Published var scanType: ScanType = .barcode
-    @Published var textContentType: DataScannerViewController.TextContentType?
+    @Published var textContentType: DataScannerViewController.TextContentType? // all, text, address, email ...etc
     @Published var recognizesMultipleItems = true
     //MARK: - Computed proparity...
     var recognizedDataType: DataScannerViewController.RecognizedDataType{
@@ -42,6 +42,7 @@ final class AppViewModel:ObservableObject{
             return "Recognaized \(recognizedItems) items(s)"
         }
     }
+    // to update every time "Scan type" change or "RecognizesMultipleItems" or "textContentType"
     var dataScannerViewId: Int{
         var hasher = Hasher()
         hasher.combine(scanType)

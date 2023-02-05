@@ -294,6 +294,7 @@
 				DEVELOPMENT_TEAM = 3TWF5CMBRA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Barcode Text Scanner";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs cameraaccess to scan bardcode and text";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -324,6 +325,7 @@
 				DEVELOPMENT_TEAM = 3TWF5CMBRA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Barcode Text Scanner";
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs cameraaccess to scan bardcode and text";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -22,15 +22,27 @@ struct ContentView: View {
         case .scannerAvailable:
             mainView
         case .cameraNotAvailable:
-            Text("Your device doesn't have a camera!")
-                .padding()
+            VStack{
+                ErrorImageView
+                Text("Your device doesn't have a camera!")
+            }
+            .padding()
         case .scannerNotAvailable:
-            Text("Your device doesn't have support for scanning barcode with this app!")
-                .multilineTextAlignment(.center)
-                .padding()
+            VStack(spacing: 10) {
+                ErrorImageView
+                Text("Your device doesn't have support for scanning barcode with this app!")
+                    .font(.headline)
+                Text("Your iPhone must be A12 Bionic CPU and later running iOS 16")
+                    .font(.subheadline)
+            }
+            .multilineTextAlignment(.center)
+            .padding()
         case .cameraAccessNotGranted:
-            Text("Please access the camera in setting!")
-                .padding()
+            VStack{
+                ErrorImageView
+                Text("Please access the camera in setting!")
+            }
+            .padding()
         case .notDetermined:
             Text("Requesting camera access!")
                 .padding()
@@ -39,6 +51,7 @@ struct ContentView: View {
     //MARK: - Helper views
     /// Main View...
     private var mainView: some View{
+        // Data Scanner:-
         DataScannerView(recognizedItems: $vm.recognizedItems,
                         recognizedDataType: vm.recognizedDataType,
                         recognizesMultipleItems: vm.recognizesMultipleItems)
@@ -83,7 +96,6 @@ struct ContentView: View {
                 }.pickerStyle(.segmented)
             }
             Text(vm.headerText).padding(.top)
-            
         }
         .padding(.horizontal)
     }
@@ -107,6 +119,13 @@ struct ContentView: View {
                 .padding()
             }
         }
+    }
+    ///ErrorImageView...
+    private var ErrorImageView: some View{
+        Image("error")
+            .resizable()
+            .scaledToFill()
+            .frame(width: 100, height: 100, alignment: .center)
     }
 }
 
