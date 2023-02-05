@@ -3,8 +3,8 @@
 
 
 # Features
- Scan Live barcode (Barcode, QR Code, Aztec)
- Scan Text with every possible cases (URL,Email,Phone,Address)
- Native Apple visionKit and manage to get LiveText and Select the Text
+ - Scan Live barcode (Barcode, QR Code, Aztec)
+ - Scan Text with every possible cases (URL,Email,Phone,Address)
+ - Native Apple visionKit and manage to get LiveText and Select the Text
 # Requierements
- iPhone with A12 Bionic CPU and later running iOS 16
+ - iPhone with A12 Bionic CPU and later running iOS 16
