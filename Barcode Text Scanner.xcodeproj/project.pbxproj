@@ -11,6 +11,8 @@
 		EA4D05BB29902D350089A80E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D05BA29902D350089A80E /* ContentView.swift */; };
 		EA4D05BD29902D380089A80E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA4D05BC29902D380089A80E /* Assets.xcassets */; };
 		EA4D05C029902D380089A80E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA4D05BF29902D380089A80E /* Preview Assets.xcassets */; };
+		EA4D05C729902DDE0089A80E /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D05C629902DDE0089A80E /* AppViewModel.swift */; };
+		EA4D05CA2990369C0089A80E /* DataScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D05C92990369C0089A80E /* DataScannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		EA4D05BA29902D350089A80E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EA4D05BC29902D380089A80E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA4D05BF29902D380089A80E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EA4D05C629902DDE0089A80E /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		EA4D05C92990369C0089A80E /* DataScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +56,8 @@
 			isa = PBXGroup;
 			children = (
 				EA4D05B829902D350089A80E /* Barcode_Text_ScannerApp.swift */,
-				EA4D05BA29902D350089A80E /* ContentView.swift */,
+				EA85C2D22990503200725C66 /* View */,
+				EA4D05C8299033C00089A80E /* ViewModel */,
 				EA4D05BC29902D380089A80E /* Assets.xcassets */,
 				EA4D05BE29902D380089A80E /* Preview Content */,
 			);
@@ -65,6 +70,23 @@
 				EA4D05BF29902D380089A80E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EA4D05C8299033C00089A80E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				EA4D05C629902DDE0089A80E /* AppViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		EA85C2D22990503200725C66 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				EA4D05BA29902D350089A80E /* ContentView.swift */,
+				EA4D05C92990369C0089A80E /* DataScannerView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +161,8 @@
 			files = (
 				EA4D05BB29902D350089A80E /* ContentView.swift in Sources */,
 				EA4D05B929902D350089A80E /* Barcode_Text_ScannerApp.swift in Sources */,
+				EA4D05C729902DDE0089A80E /* AppViewModel.swift in Sources */,
+				EA4D05CA2990369C0089A80E /* DataScannerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,8 +291,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Barcode Text Scanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 3TWF5CMBRA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs cameraaccess to scan bardcode and text";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -295,8 +321,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Barcode Text Scanner/Preview Content\"";
+				DEVELOPMENT_TEAM = 3TWF5CMBRA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs cameraaccess to scan bardcode and text";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
