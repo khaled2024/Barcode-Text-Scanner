@@ -7,6 +7,7 @@
 
 import SwiftUI
 import VisionKit
+import PhotosUI
 struct ContentView: View {
     //MARK: - Proparties:-
     @EnvironmentObject var vm: AppViewModel
@@ -17,6 +18,7 @@ struct ContentView: View {
         ("Email",.emailAddress),
         ("Address",.fullStreetAddress)
     ]
+    //MARK: - Body :-
     var body: some View {
         switch vm.dataScannerAccessStatus{
         case .scannerAvailable:
@@ -49,33 +51,76 @@ struct ContentView: View {
         }
     }
     //MARK: - Helper views
-    /// Main View...
+    //MARK: - Main View...
     private var mainView: some View{
         // Data Scanner:-
-        DataScannerView(recognizedItems: $vm.recognizedItems,
-                        recognizedDataType: vm.recognizedDataType,
-                        recognizesMultipleItems: vm.recognizesMultipleItems)
-        .background(Color.gray.opacity(0.3))
-        .ignoresSafeArea()
-        .id(vm.dataScannerViewId)
-        .sheet(isPresented: .constant(true), content: {
-            bottomContainerView
-                .background(.ultraThinMaterial)
-                .presentationDetents([.medium,.fraction(0.25)])
-                .presentationDragIndicator(.visible)
-            // to didn't make user dismiss the sheet...
-                .interactiveDismissDisabled()
-                .onAppear{
-                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                          let controller = windowScene.windows.first?.rootViewController?.presentedViewController else{return}
-                    controller.view.backgroundColor = .clear
+        liveImageFeed
+            .background(Color.gray.opacity(0.3))
+            .ignoresSafeArea()
+            .id(vm.dataScannerViewId)
+        // present the sheet :-
+        ///(if u want to present another sheet above the firest sheet present it inside the first sheet not after the first sheet...)
+        // First Sheet...
+            .sheet(isPresented: .constant(true), content: {
+                bottomContainerView
+                    .background(.ultraThinMaterial)
+                    .presentationDetents([.medium,.fraction(0.25)])
+                    .presentationDragIndicator(.visible)
+                // to didn't make user dismiss the sheet...
+                    .interactiveDismissDisabled()
+                /// disable the bottom sheet if there was a photo to capture...
+                    .disabled(vm.capturePhoto != nil)
+                    .onAppear{
+                        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                              let controller = windowScene.windows.first?.rootViewController?.presentedViewController else{return}
+                        controller.view.backgroundColor = .clear
+                    }
+                //Second Sheet...
+                    .sheet(item: $vm.capturePhoto) { photo in
+                        ZStack(alignment: .topLeading){
+                            LiveTextView(image: photo.image)
+                            Button {
+                                /// that will dismiss the sheet...
+                                vm.capturePhoto = nil
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .imageScale(.large)
+                            }
+                            .foregroundColor(.white)
+                            .padding([.top,.trailing])
+                        }
+                        .edgesIgnoringSafeArea(.bottom)
+                    }
+            })
+            .onChange(of: vm.scanType, perform: {_ in vm.recognizedItems = []})
+            .onChange(of: vm.textContentType, perform: {_ in vm.recognizedItems = []})
+            .onChange(of: vm.recognizesMultipleItems, perform: {_ in vm.recognizedItems = []})
+            .onChange(of: vm.selectedPhotoPickerItem) { newValue in
+                guard let newValue = newValue else{return}
+                Task{ @MainActor in
+                    guard let data = try? await newValue.loadTransferable(type: Data.self),
+                          let image = UIImage(data: data)
+                    else{return}
+                    self.vm.capturePhoto = IdentifiableImage(image: image)
                 }
-        })
-        .onChange(of: vm.scanType, perform: {_ in vm.recognizedItems = []})
-        .onChange(of: vm.textContentType, perform: {_ in vm.recognizedItems = []})
-        .onChange(of: vm.recognizesMultipleItems, perform: {_ in vm.recognizedItems = []})
+            }
     }
-    /// Header View...
+    //MARK: - liveImageFeed...
+    @ViewBuilder
+    private var liveImageFeed: some View{
+        if let capturePhoto = vm.capturePhoto{
+            Image(uiImage: capturePhoto.image)
+                .resizable()
+                .scaledToFit()
+        }else{
+            DataScannerView(recognizedItems: $vm.recognizedItems,
+                            recognizedDataType: vm.recognizedDataType,
+                            recognizesMultipleItems: vm.recognizesMultipleItems,
+                            shouldCapturePhoto: $vm.shouldCapurePhoto,
+                            capturePhoto: $vm.capturePhoto)
+        }
+    }
+    //MARK: - Header View...
     private var headerView: some View{
         VStack{
             HStack{
@@ -95,11 +140,27 @@ struct ContentView: View {
                     
                 }.pickerStyle(.segmented)
             }
-            Text(vm.headerText).padding(.top)
+            HStack{
+                Text(vm.headerText)
+                Spacer()
+                // 2 button
+                Button {
+                    vm.shouldCapurePhoto = true
+                } label: {
+                    Image(systemName: "camera.circle")
+                        .imageScale(.large)
+                        .font(.system(size: 30))
+                }
+                PhotosPicker(selection: $vm.selectedPhotoPickerItem,matching: .images) {
+                    Image(systemName: "photo.circle")
+                        .imageScale(.large)
+                        .font(.system(size: 30))
+                }
+            }
         }
         .padding(.horizontal)
     }
-    /// BottomContainerView...
+    //MARK: - BottomContainerView...
     private var bottomContainerView: some View{
         VStack{
             headerView
@@ -120,7 +181,7 @@ struct ContentView: View {
             }
         }
     }
-    ///ErrorImageView...
+    //MARK: - ErrorImageView...
     private var ErrorImageView: some View{
         Image("error")
             .resizable()

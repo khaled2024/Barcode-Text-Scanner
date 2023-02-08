@@ -15,7 +15,7 @@ struct Barcode_Text_ScannerApp: App {
             ContentView()
                 .environmentObject(vm)
                 .task {
-                    // for the firest time launch the app
+                    /// for the first time launch the app
                     await vm.requestDataScannerAccessStatus()
                 }
         }

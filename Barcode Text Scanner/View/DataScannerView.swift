@@ -10,10 +10,15 @@ import SwiftUI
 import VisionKit
 
 struct DataScannerView:UIViewControllerRepresentable {
+    //MARK: - Proparties...
     @Binding var recognizedItems: [RecognizedItem]
     let recognizedDataType: DataScannerViewController.RecognizedDataType
     let recognizesMultipleItems: Bool
+    // For Live Text View
+    @Binding var shouldCapturePhoto: Bool
+    @Binding var capturePhoto: IdentifiableImage?
     
+    // MakeUIViewController...
     func makeUIViewController(context: Context) -> DataScannerViewController {
         let vc = DataScannerViewController(
             recognizedDataTypes: [recognizedDataType],
@@ -23,18 +28,37 @@ struct DataScannerView:UIViewControllerRepresentable {
             isHighlightingEnabled: true)
         return vc
     }
+    // capturePhoto:-
+    private func capturePhoto(dataScannerVC: DataScannerViewController){
+        Task{ @MainActor in
+            do{
+                let photo = try await dataScannerVC.capturePhoto()
+                self.capturePhoto = IdentifiableImage(image: photo)
+            }catch{
+                print(error.localizedDescription)
+            }
+            self.shouldCapturePhoto = false
+        }
+    }
+    //UpdateUIViewController(fro SwiftUI to UIKit)...
     func updateUIViewController(_ uiViewController: DataScannerViewController, context: Context) {
         uiViewController.delegate = context.coordinator
         try? uiViewController.startScanning()
+        // if user press camera buttom
+        if shouldCapturePhoto{
+            capturePhoto(dataScannerVC: uiViewController)
+        }
     }
+    // this func make the changes from UIKit to SwiftUI...
     func makeCoordinator() -> coordinator {
         coordinator(recognizedItems: $recognizedItems)
     }
     static func dismantleUIViewController(_ uiViewController: DataScannerViewController, coordinator: coordinator) {
         uiViewController.stopScanning()
     }
+   
     
-    //MARK: - coordinator
+    //MARK: - coordinator incharge all stuff of DataScannerViewControllerDelegate...
     class coordinator: NSObject,DataScannerViewControllerDelegate{
         @Binding var recognizedItems: [RecognizedItem]
         init(recognizedItems: Binding<[RecognizedItem]>) {
@@ -57,7 +81,10 @@ struct DataScannerView:UIViewControllerRepresentable {
         func dataScanner(_ dataScanner: DataScannerViewController, becameUnavailableWithError error: DataScannerViewController.ScanningUnavailable) {
             print("become unavailable with error \(error.localizedDescription)")
         }
-        
-        
     }
 }
+struct IdentifiableImage: Identifiable{
+    let id = UUID()
+    let image: UIImage
+}
+ 
